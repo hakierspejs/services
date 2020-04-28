@@ -9,6 +9,5 @@ services:
             - ./openttd:/home/openttd/.openttd:z
         restart: unless-stopped
         environment:
-            loadgame: "false"
-            savename: "hakier-game.sav"
+            loadgame: "last-autosave"
             savepath: "/home/openttd/.openttd/save"
