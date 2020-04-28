@@ -1,0 +1,27 @@
+version: "3.3"
+
+services:
+  traefik:
+    image: "traefik:v2.1"
+    network_mode: bridge
+    restart: unless-stopped
+    container_name: "traefik"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.test-redirectregex.redirectregex.regex=http(s)?://(www.)?hs-ldz.pl"
+      - "traefik.http.middlewares.test-redirectregex.redirectregex.replacement=https://lodz.hackerspace.pl"
+    command:
+      - "--log.level=DEBUG"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.myresolver.acme.email=d33tah@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"

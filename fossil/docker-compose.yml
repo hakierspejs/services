@@ -1,0 +1,18 @@
+version: '3'
+services:
+  app:
+    image: duvel/fossil:2.10
+    restart: unless-stopped
+    volumes:
+      - ./repos:/opt/fossil
+      - /dev/null:/dev/null
+      - /dev/urandom:/dev/urandom
+    labels:
+        traefik.http.routers.fossil.rule: "Host(`fossil.hs-ldz.pl`)"
+        traefik.http.routers.fossil.entrypoints: "web"
+        traefik.http.routers.fossil-https.rule: "Host(`fossil.hs-ldz.pl`)"
+        traefik.http.routers.fossil-https.entrypoints: "websecure"
+        traefik.http.routers.fossil-https.tls.certresolver: "myresolver"
+        traefik.http.services.fossil.loadbalancer.server.port: "2137"
+    network_mode: bridge
+    entrypoint: ["/usr/bin/fossil", "server", "--nojail", "--https", "--port", "2137", "--repolist", "/opt/fossil"]
