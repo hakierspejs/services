@@ -74,13 +74,13 @@ services:
       # - mysql://hackmd:hackmdpass@database:3306/hackmd
       # - sqlite:///data/sqlite.db (NOT RECOMMENDED)
       # - For details see the official sequelize docs: http://docs.sequelizejs.com/en/v3/
-      - CMD_DB_URL=postgres://hackmd:hackmdpass@codimd_container_database_1:5432/hackmd
+      - CMD_DB_URL=postgres://hackmd:hackmdpass@codimd_database_1:5432/hackmd
     restart: unless-stopped
     depends_on:
       - database
     network_mode: bridge
     external_links:
-      - codimd_container_database_1
+      - codimd_database_1
       
 
 # Define named volumes so data stays in place
